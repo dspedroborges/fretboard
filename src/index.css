@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+svg path {
+  transition: fill 0.2s;
+}
+
+svg path:hover {
+  fill: palevioletred;
+  cursor: pointer;
+}
