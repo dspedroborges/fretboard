@@ -4,12 +4,3 @@
 * {
   font-family: "Inter", sans-serif;
 }
-
-svg path {
-  transition: fill 0.2s;
-}
-
-svg path:hover {
-  fill: palevioletred;
-  cursor: pointer;
-}

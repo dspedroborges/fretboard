@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import { getBg } from "../utils/functions";
+import { getBg } from "../modules/shared/shared.functions";
 
 const synth = new Tone.Synth().toDestination();
 

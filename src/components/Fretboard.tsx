@@ -1,18 +1,16 @@
 import { useState } from "react";
 import ArmNote from "./ArmNote";
-import { getScaleByKeyAndPattern } from "../utils/functions";
-import { COLORS, guitarNotes, keyTranslations, OCTAVE_MAP, scaleCategories } from "../utils/data";
-import type { Chord, NoteScaleType } from "../utils/types";
-import { getHarmonicField } from "../utils/chords/functions";
-import Chords from "./Chords";
+import { COLORS, guitarNotes, OCTAVE_MAP, scaleCategories } from "../modules/shared/shared.data";
 import { BsSend } from "react-icons/bs";
+import type { NoteScaleType } from "../modules/scales/scales.types";
+import ScalesService from "../modules/scales/scales.service";
 
 export default function Fretboard() {
-    const [scale, setScale] = useState<NoteScaleType[]>([]);
+    const [_, setScale] = useState<NoteScaleType[]>([]);
     const [notesView, setNotesView] = useState<NoteScaleType[]>([]);
     const [pattern, setPattern] = useState("");
     const [key, setKey] = useState("");
-    const harmonicField: Record<string, Chord[]> = getHarmonicField(scale);
+    const scalesService = new ScalesService();
 
     const getIntervalValue = (note: { value: string, variations: string[] }) => {
         const foundNote = notesView.find(e => {
@@ -38,7 +36,7 @@ export default function Fretboard() {
     }
 
     return (
-        <main className="min-h-screen bg-gray-950 bg-opacity-80 bg-blend-multiply bg-[url('/guitar.jpg')] bg-center bg-cover select-none pb-24">
+        <main className="min-h-screen select-none pb-24">
             <div className="w-full">
                 <div className="flex pb-4">
                     {
@@ -82,33 +80,16 @@ export default function Fretboard() {
                 }
             </div>
 
-            <div className="mt-16">
-                {
-                    Object.keys(harmonicField).map((k, i) => {
-                        return (
-                            <Chords
-                                key={i}
-                                title={keyTranslations[k].en}
-                                chords={harmonicField[k]}
-                                onClick={(intervals: NoteScaleType[]) => setNotesView(intervals)}
-                            />
-                        )
-                    })
-                }
-            </div>
-
-
-
             <form onSubmit={(e) => {
                 e.preventDefault();
                 if (key !== "" && pattern !== "") {
-                    const generatedScale = getScaleByKeyAndPattern(key, pattern);
+                    const generatedScale = scalesService.getScaleByKeyAndPattern(key, pattern);
                     setScale(generatedScale);
                     setNotesView(generatedScale);
                 }
             }} className="fixed bottom-0 left-0 w-full flex h-[50px]">
                 <select onChange={(e) => setKey(e.target.value)} className="bg-gray-950 text-white p-2 text-lg w-full h-full border-4 border-blue-600 outline-blue-700">
-                    <option value="">Selecione uma opção</option>
+                    <option value="">Choose the key</option>
                     <option value="C">C</option>
                     <option value="C#">C#</option>
                     <option value="D">D</option>
@@ -128,7 +109,7 @@ export default function Fretboard() {
                     }}
                     className="bg-gray-950 text-white p-2 text-lg w-full h-full border-4 border-blue-600 outline-blue-700"
                 >
-                    <option value="">Selecione uma opção</option>
+                    <option value="">Choose the scale</option>
 
                     {scaleCategories.map(category => (
                         <optgroup key={category.category} label={category.category}>

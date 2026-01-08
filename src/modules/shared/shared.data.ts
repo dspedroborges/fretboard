@@ -1,60 +1,18 @@
-import type { Interval } from "./types";
-
-export const SEMITONS: Record<string, number> = {
-    "1": 0,
-    "2m": 1,
-    "2M": 2,
-    "3m": 3,
-    "3M": 4,
-    "4-": 4,
-    "4J": 5,
-    "4A": 6,
-    "5-": 6,
-    "5J": 7,
-    "5A": 8,
-    "6m": 8,
-    "6M": 9,
-    "7-": 9,
-    "7m": 10,
-    "7M": 11,
-    "8J": 12
-};
-
-export const POSSIBLE_INTERVALS: Interval[] = [
-    "1J",
-    "2m",
-    "2M",
-    "3m",
-    "3M",
-    "4-",
-    "4J",
-    "4A",
-    "5-",
-    "5J",
-    "5A",
-    "6m",
-    "6M",
-    "7-",
-    "7m",
-    "7M",
-    "8J"
-]
-
 export const scaleCategories = [
     {
-        category: "Modos Gregos",
+        category: "Greek Modes",
         scales: [
-            { label: "Jônio (Maior natural)", value: ["1J", "2M", "3M", "4J", "5J", "6M", "7M"] },
-            { label: "Dórico", value: ["1J", "2M", "3m", "4J", "5J", "6M", "7m"] },
-            { label: "Frígio", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7m"] },
-            { label: "Lídio", value: ["1J", "2M", "3M", "4J", "5J", "6M", "7M"] },
-            { label: "Mixolídio", value: ["1J", "2M", "3M", "4J", "5J", "6M", "7m"] },
-            { label: "Eólio (Menor natural)", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7m"] },
-            { label: "Lócrio", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7M"] },
+            { label: "Ionian (Natural Major)", value: ["1J", "2M", "3M", "4J", "5J", "6M", "7M"] },
+            { label: "Dorian", value: ["1J", "2M", "3m", "4J", "5J", "6M", "7m"] },
+            { label: "Phrygian", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7m"] },
+            { label: "Lydian", value: ["1J", "2M", "3M", "4J", "5J", "6M", "7M"] },
+            { label: "Mixolydian", value: ["1J", "2M", "3M", "4J", "5J", "6M", "7m"] },
+            { label: "Aeolian (Natural Minor)", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7m"] },
+            { label: "Locrian", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7M"] },
         ]
     },
     {
-        category: "Escalas Japonesas",
+        category: "Japanese Scales",
         scales: [
             { label: "In Sen", value: ["1J", "2M", "4J", "5J", "6m"] },
             { label: "Hirajoshi", value: ["1J", "2m", "4J", "5J", "6m"] },
@@ -64,23 +22,23 @@ export const scaleCategories = [
         ]
     },
     {
-        category: "Pentatônicas",
+        category: "Pentatonics",
         scales: [
-            { label: "Pentatônica Maior", value: ["1J", "2M", "3M", "5J", "6M"] },
-            { label: "Pentatônica Menor", value: ["1J", "3m", "4J", "5J", "7m"] },
+            { label: "Major Pentatonic", value: ["1J", "2M", "3M", "5J", "6M"] },
+            { label: "Minor Pentatonic", value: ["1J", "3m", "4J", "5J", "7m"] },
         ]
     },
     {
         category: "Pentablues",
         scales: [
-            { label: "Pentablues Maior", value: ["1J", "2M", "3M", "4A", "5J", "6M"] },
-            { label: "Pentablues Menor", value: ["1J", "3m", "4J", "4A", "5J", "7m"] },
+            { label: "Major Pentablues", value: ["1J", "2M", "3M", "4A", "5J", "6M"] },
+            { label: "Minor Pentablues", value: ["1J", "3m", "4J", "4A", "5J", "7m"] },
         ]
     },
-        {
-        category: "Harmônica",
+    {
+        category: "Harmonic",
         scales: [
-            { label: "Menor harmônica", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7M"] },
+            { label: "Harmonic Minor", value: ["1J", "2M", "3m", "4J", "5J", "6m", "7M"] },
         ]
     }
 ];
@@ -198,9 +156,18 @@ export const guitarNotes: { value: string; variations: string[] }[][] = [
     ]
 ];
 
-export const COLORS = ["darkred", "#1E3A8A", "#065F46", "#5B21B6", "#7C2D12", "#0F766E", "#374151"];
+export const COLORS = [
+    "#1A5276",
+    "#21618C",
+    "#2874A6",
+    "#2E86C1",
+    "#3498DB",
+    "#5DADE2",
+    "#85C1E9",
+    "#AED6F1"
+];
 
-export const keyTranslations: Record<string, {pt: string, en: string }> = {
+export const keyTranslations: Record<string, { pt: string, en: string }> = {
     "triads": { pt: "Tríades", en: "Triads" },
     "tetrads": { pt: "Tétrades", en: "Tetrads" }
 };
