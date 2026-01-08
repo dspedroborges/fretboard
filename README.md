@@ -6,6 +6,8 @@
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/dspedroborges/fretboard?style=for-the-badge)
 ![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/dspedroborges/fretboard?style=for-the-badge)
 
+<img src="print.png" alt="Example image">
+
 > Fretboard is a web app that allows you to visualize musical scales on a guitar fretboard. Select a key and a scale to see the notes highlighted on the fretboard.
 
 ## Techs
