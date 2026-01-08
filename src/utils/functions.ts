@@ -1,3 +1,6 @@
+import { COLORS, POSSIBLE_INTERVALS, SEMITONS } from "./data";
+import type { Interval, NoteScaleType } from "./types";
+
 export function fisherYatesShuffle<T>(array: T[]) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -5,47 +8,6 @@ export function fisherYatesShuffle<T>(array: T[]) {
     }
     return array;
 }
-
-export const SEMITONS: Record<string, number> = {
-    "1": 0,
-    "2m": 1,
-    "2M": 2,
-    "3m": 3,
-    "3M": 4,
-    "4-": 4,
-    "4J": 5,
-    "4A": 6,
-    "5-": 6,
-    "5J": 7,
-    "5A": 8,
-    "6m": 8,
-    "6M": 9,
-    "7-": 9,
-    "7m": 10,
-    "7M": 11,
-    "8J": 12
-};
-
-export const POSSIBLE_INTERVALS = [
-    "2m",
-    "2M",
-    "3m",
-    "3M",
-    "4-",
-    "4J",
-    "4A",
-    "5-",
-    "5J",
-    "5A",
-    "6m",
-    "6M",
-    "7-",
-    "7m",
-    "7M",
-    "8J"
-]
-
-export type IntervalType = typeof POSSIBLE_INTERVALS[number];
 
 export function countSubstr(str: string, substr: string): number {
     if (substr === "") return 0;
@@ -71,10 +33,12 @@ export const NEXT_NATURAL_NOTE: Record<string, { note: string; distance: number 
     "B": { note: "C", distance: 1 }
 };
 
-const getNoteByInterval = (note: string, interval: IntervalType) => {
+const getNoteByInterval = (note: string, interval: Interval) => {
+    if (interval == "1J") return note;
+
     const desiredDistance = SEMITONS[interval];
-    const sharpAmount = countSubstr(note, "#");
-    const bemolAmount = countSubstr(note, "b");
+    const sharpAmount = [...note].filter(c => c === '#').length;
+    const bemolAmount = [...note].filter(c => c === 'b').length;
     const naturalNote = note.replaceAll("#", "").replaceAll("b", "");
     const intervalAmount = Number(interval.split("")[0]);
 
@@ -108,20 +72,16 @@ export const getInterval = (note1: string, note2: string) => {
         }
     }
 
-    return "8J";
-}
-
-export type ScaleType = {
-    note: string;
-    interval: { value: number, type: string }
+    return "1J";
 }
 
 export const getScaleByKeyAndPattern = (key: string, pattern: string) => {
     const patternSplit = pattern.split(" ");
-    let notes: ScaleType[] = [];
+
+    let notes: NoteScaleType[] = [];
     for (let i = 0; i < patternSplit.length; i++) {
         notes.push({
-            note: getNoteByInterval(key, patternSplit[i]),
+            note: getNoteByInterval(key, patternSplit[i] as Interval),
             interval: { value: Number(patternSplit[i].split("")[0]), type: patternSplit[i].split("")[1] },
         });
     }
@@ -129,124 +89,10 @@ export const getScaleByKeyAndPattern = (key: string, pattern: string) => {
     return notes;
 }
 
-export const COLORS = ["darkred", "#1E3A8A", "#065F46", "#5B21B6", "#7C2D12", "#0F766E", "#374151", "#92400E"];
 
 export const getBg = (intervalValue: number) => {
     return COLORS[intervalValue - 1] ?? "transparent";
 };
-
-export const OCTAVE_MAP = [
-    [4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5], // E4
-    [3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4], // B3
-    [3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4], // G3
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4], // D3
-    [2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], // A2
-    [2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3]  // E2
-];
-
-export const guitarNotes: { value: string; variations: string[] }[][] = [
-    // 1ª corda (E agudo)
-    [
-        { value: "E", variations: ["Fb", "D##"] },
-        { value: "F", variations: ["E#", "Gbb"] },
-        { value: "F#", variations: ["Gb", "E##"] },
-        { value: "G", variations: ["F##", "Abb"] },
-        { value: "G#", variations: ["Ab"] },
-        { value: "A", variations: ["G##", "Bbb"] },
-        { value: "A#", variations: ["Bb", "G###"] },
-        { value: "B", variations: ["Cb", "A##"] },
-        { value: "C", variations: ["B#", "Dbb"] },
-        { value: "C#", variations: ["Db", "B##"] },
-        { value: "D", variations: ["C##", "Ebb"] },
-        { value: "D#", variations: ["Eb"] },
-        { value: "E", variations: ["Fb", "D##"] }
-    ],
-
-    // 2ª corda (B)
-    [
-        { value: "B", variations: ["Cb", "A##"] },
-        { value: "C", variations: ["B#", "Dbb"] },
-        { value: "C#", variations: ["Db", "B##"] },
-        { value: "D", variations: ["C##", "Ebb"] },
-        { value: "D#", variations: ["Eb"] },
-        { value: "E", variations: ["Fb", "D##"] },
-        { value: "F", variations: ["E#", "Gbb"] },
-        { value: "F#", variations: ["Gb", "E##"] },
-        { value: "G", variations: ["F##", "Abb"] },
-        { value: "G#", variations: ["Ab"] },
-        { value: "A", variations: ["G##", "Bbb"] },
-        { value: "A#", variations: ["Bb"] },
-        { value: "B", variations: ["Cb", "A##"] }
-    ],
-
-    // 3ª corda (G)
-    [
-        { value: "G", variations: ["F##", "Abb"] },
-        { value: "G#", variations: ["Ab"] },
-        { value: "A", variations: ["G##", "Bbb"] },
-        { value: "A#", variations: ["Bb"] },
-        { value: "B", variations: ["Cb", "A##"] },
-        { value: "C", variations: ["B#", "Dbb"] },
-        { value: "C#", variations: ["Db", "B##"] },
-        { value: "D", variations: ["C##", "Ebb"] },
-        { value: "D#", variations: ["Eb"] },
-        { value: "E", variations: ["Fb", "D##"] },
-        { value: "F", variations: ["E#", "Gbb"] },
-        { value: "F#", variations: ["Gb", "E##"] },
-        { value: "G", variations: ["F##", "Abb"] }
-    ],
-
-    // 4ª corda (D)
-    [
-        { value: "D", variations: ["C##", "Ebb"] },
-        { value: "D#", variations: ["Eb"] },
-        { value: "E", variations: ["Fb", "D##"] },
-        { value: "F", variations: ["E#", "Gbb"] },
-        { value: "F#", variations: ["Gb", "E##"] },
-        { value: "G", variations: ["F##", "Abb"] },
-        { value: "G#", variations: ["Ab"] },
-        { value: "A", variations: ["G##", "Bbb"] },
-        { value: "A#", variations: ["Bb"] },
-        { value: "B", variations: ["Cb", "A##"] },
-        { value: "C", variations: ["B#", "Dbb"] },
-        { value: "C#", variations: ["Db", "B##"] },
-        { value: "D", variations: ["C##", "Ebb"] }
-    ],
-
-    // 5ª corda (A)
-    [
-        { value: "A", variations: ["G##", "Bbb"] },
-        { value: "A#", variations: ["Bb"] },
-        { value: "B", variations: ["Cb", "A##"] },
-        { value: "C", variations: ["B#", "Dbb"] },
-        { value: "C#", variations: ["Db", "B##"] },
-        { value: "D", variations: ["C##", "Ebb"] },
-        { value: "D#", variations: ["Eb"] },
-        { value: "E", variations: ["Fb", "D##"] },
-        { value: "F", variations: ["E#", "Gbb"] },
-        { value: "F#", variations: ["Gb", "E##"] },
-        { value: "G", variations: ["F##", "Abb"] },
-        { value: "G#", variations: ["Ab"] },
-        { value: "A", variations: ["G##", "Bbb"] }
-    ],
-
-    // 6ª corda (E grave)
-    [
-        { value: "E", variations: ["Fb", "D##"] },
-        { value: "F", variations: ["E#", "Gbb"] },
-        { value: "F#", variations: ["Gb", "E##"] },
-        { value: "G", variations: ["F##", "Abb"] },
-        { value: "G#", variations: ["Ab"] },
-        { value: "A", variations: ["G##", "Bbb"] },
-        { value: "A#", variations: ["Bb"] },
-        { value: "B", variations: ["Cb", "A##"] },
-        { value: "C", variations: ["B#", "Dbb"] },
-        { value: "C#", variations: ["Db", "B##"] },
-        { value: "D", variations: ["C##", "Ebb"] },
-        { value: "D#", variations: ["Eb"] },
-        { value: "E", variations: ["Fb", "D##"] }
-    ]
-];
 
 export function getRandomNumberInRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;

@@ -9,7 +9,7 @@ export default function ArmNote({ note, intervalValue, showNoteValue, isReferenc
 
     const playNote = async (note: string) => {
         await Tone.start();
-        synth.triggerAttackRelease(`${note}${octave}`, "8n");
+        synth.triggerAttackRelease(`${note.replaceAll("B#", "C")}${octave}`, "8n");
     };
     
     return (
@@ -22,8 +22,7 @@ export default function ArmNote({ note, intervalValue, showNoteValue, isReferenc
         text-center ${isFirstHouse ? "border-r md:border-r-12 border-gray-300" : "border border-gray-500"} p-2
         relative
         text-white text-[8px] md:text-base font-extralight
-        hover:shadow-xl
-        hover:opacity-90
+        hover:outline-2 hover:outline-gray-300
         `
             }
             style={{
